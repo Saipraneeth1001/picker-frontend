@@ -22,7 +22,7 @@ function Copyright(props) {
       {...props}>
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        Pincor
+        Picker
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -38,15 +38,8 @@ const Register = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-
-  const validateUserDetails = () => {
-    if (email == "" || password == "") {
-      setError(true);
-    } else {
-      setError(false);
-    }
-  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -55,7 +48,6 @@ const Register = () => {
       username: email,
       password: password,
     };
-    validateUserDetails();
       const options = {
         method: "POST",
         headers: {
@@ -64,23 +56,23 @@ const Register = () => {
         },
         body: JSON.stringify(userDetails),
       };
-      fetch("http://127.0.0.1:8080/users/register", options)
-        .then((response) => {
-          if (!response.ok) {
-            return Promise.reject(error);
-          }
+      fetch(process.env.REACT_APP_BASE_URL+"/users/register", options)
+      .then(response => response.json())
+      .then(response => {
+        if (response.userExists || response.validationError) {
           setTimeout(() => {
-            setLoading(false);
-            navigate("/login");
-          }, 3000);
-        })
-        .catch((err) => {
-          setTimeout(() => {
-            setLoading(false);
             setError(true);
-          }, 3000);
-        });
-  };
+            setErrorMessage(response.message);
+            setLoading(false);
+          }, 2000)
+        } else {
+          setTimeout(()=> {
+            navigate("/login");
+          },2000);
+        }
+      })
+  }
+       
 
   return loading ? (
     <Loader />
@@ -102,7 +94,7 @@ const Register = () => {
             Sign up
           </Typography>
           {error ? (
-            <p style={{ color: "red" }}>Please Provide Valid Details, check criteria below</p>
+            <p style={{ color: "red" }}> {errorMessage} </p>
           ) : (
             ""
           )}

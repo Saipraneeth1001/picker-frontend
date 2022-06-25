@@ -25,7 +25,7 @@ const OtpVerification = () => {
         },
       body: JSON.stringify({username: name, otp: otp})
       }
-      fetch("http://localhost:8080/forgotPassword/checkOTP", options)
+      fetch(process.env.REACT_APP_BASE_URL+"/forgotPassword/checkOTP", options)
       .then(response => {
         setTimeout(() => {
             dispatch({ type: "SAVE_USER_FORGOT_PASSWORD", payload: name})

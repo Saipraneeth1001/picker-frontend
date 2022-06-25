@@ -50,7 +50,7 @@ const handleSubmit = (e) => {
       },
       body: JSON.stringify(data)  
     }
-    fetch('http://127.0.0.1:8080/alerts/create', options)
+    fetch(process.env.REACT_APP_BASE_URL+'/alerts/create', options)
     .then(response =>  {
       if (!response.ok) {
          return Promise.reject(error);

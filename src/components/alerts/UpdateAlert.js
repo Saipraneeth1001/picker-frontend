@@ -5,6 +5,10 @@ import { useSelector } from 'react-redux';
 import Loader from '../loader/loader';
 import TextField from "@mui/material/TextField";
 import { useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 
 
@@ -20,9 +24,9 @@ const UpdateAlert = () => {
   const [name, setName] = useState();
   const [url ,setUrl] = useState();
 
-  let stringId = window.location.href;
-  let length = stringId.length;
-  stringId = stringId.substring(length - 24, length);
+  let alertId = window.location.href;
+  let length = alertId.length;
+  alertId = alertId.substring(length - 24, length);
 
   useEffect(() => {
     if (!token) {
@@ -41,7 +45,7 @@ const UpdateAlert = () => {
         "Authorization":"Bearer "+token
       }
     }
-    fetch("http://localhost:8080/alerts/get/"+stringId, options)
+    fetch(process.env.REACT_APP_BASE_URL+"/alerts/get/"+alertId, options)
     .then(response => { 
       const temp = response.json();
       if (!response.ok) {
@@ -76,7 +80,7 @@ const UpdateAlert = () => {
         limit: price
       })
     }
-    fetch("http://localhost:8080/alerts/update/"+stringId, options)
+    fetch(process.env.REACT_APP_BASE_URL+"/alerts/update/"+alertId, options)
     .then(response => {
       const temp = response.json();
       if (!response.ok) {
@@ -102,46 +106,54 @@ const UpdateAlert = () => {
           "Accept":"application/json",
           "Authorization": "Bearer "+token
       },
-    body: JSON.stringify(stringId)
+      body: alertId
+    
     }
-    fetch("http://localhost:8080/alerts/delete", options)
+    fetch(process.env.REACT_APP_BASE_URL+"/alerts/delete/", options)
     .then(response => {
-      const temp = response.json();
       if (!response.ok) {
         return Promise.reject(error);
       }
-      return temp;
+      return response;
     }).then(response => {
       setTimeout(() => {
           navigate("/alerts");
       }, 3000)
+    }).catch(err => {
+      setLoading(false);
+      setError(true);
     })
   }
 
   return (
     loading? <Loader /> :
-    <div style = {{margin: 15}}>
-        <TextField type = "text" 
-        value = {url} 
-        onChange = {(e) => {setUrl(e.target.value)}}
-        label="url"
-        style={{margin: 4}}
-        />
-        <TextField type = "text" 
-        value = {price}
-        onChange = {(e) => {setPrice(e.target.value)}}
-        label = "limit"
-        style={{margin: 4}}/>
-        <TextField type = "text" value = {name} 
-        onChange = {(e) => {setName(e.target.value)}}
-        label = "name"
-        style={{margin: 4}}/> 
+    <Box style = {{margin: 15}} flex>
+        <Grid style={{margin: 4}}>
+          <Typography variant = "subtitle1">Url:</Typography>
+          <TextField variant = "outlined" type = "text" 
+            value = {url} 
+            onChange = {(e) => {setUrl(e.target.value)}}
+            />
+        </Grid>
+        <Grid style={{margin: 4}}>
+          <Typography variant = "subtitle1">Limit: </Typography>
+          <TextField variant = "outlined" type = "text" 
+            value = {price}
+            onChange = {(e) => {setPrice(e.target.value)}}
+            />
+        </Grid>
+       <Grid style={{margin: 4}}> 
+         <Typography variant = "subtitle1">ItemName: </Typography>
+         <TextField variant = "outlined" type = "text" value = {name} 
+          onChange = {(e) => {setName(e.target.value)}}
+          /> 
+       </Grid> 
         { error ? <p style={{color:'red'}}>There has been an error, please try again later</p>: <p></p> }
-        <button style={{backgroundColor:'green', color: 'white', margin: 4}}
-        onClick = {(e) => updateAlert(e)}>Update Alert</button>
-        <button style={{backgroundColor:'red', color: 'white', margin: 4}}
-        onClick = {() => deleteAlert}>Delete Alert</button>
-    </div>
+        <Button style={{backgroundColor:'green', color: 'white', margin: 4}}
+        onClick = {(e) => updateAlert(e)}>Update Alert</Button>
+        <Button style={{backgroundColor:'red', color: 'white', margin: 4}}
+        onClick = {(e) => deleteAlert(e)}>Delete Alert</Button>
+    </Box>
   );
 
 }

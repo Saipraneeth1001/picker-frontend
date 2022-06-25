@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 const Alerts = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
+  const [empty, setEmpty] = useState(false);
   const alerts = useSelector((state) => state.alerts);
   const token = localStorage.getItem("token");
 
@@ -15,6 +16,7 @@ const Alerts = () => {
     if (!token) {
         window.location = "/"
     }
+    
     getAllalerts();
   }, []);
 
@@ -28,33 +30,39 @@ const Alerts = () => {
           "Bearer " + token,
       },
     };
-    fetch("http://127.0.0.1:8080/alerts/getAll", options)
-      .then((response) => {
-        const temp = response.json()
-        if (!response.ok) {
-          return Promise.reject(error);
-        }
-        return temp;
-      })
-      .then((response) => {
-        // setData(response);
-        dispatch({type: "SAVE_ALERTS", payload: response})
-        
-      })
-    .catch(error => {
-       setError(true);
-    });
+    fetch(process.env.REACT_APP_BASE_URL + "/alerts/getAll", options)
+    .then(response => response.json())
+    .then(response => {
+      console.log(response);
+      if (response.empty) {
+        setEmpty(true);
+      } 
+      if (response.error) {
+        setError(true);
+      }
+      dispatch({type:"SAVE_ALERTS", payload: response.alerts});
+    })
   };
 
   return error ? (
     <h4 style={{ color: "red" }}>There has been some error, try reloading</h4>
-  ) : (
-    <div>
+  ) :  
+  <>
+  {empty ? 
+
+      <div style={{margin: 15}}>
+      <p>Please Create an alert by navigating to create alerts tab</p>
+      </div>
+      :
+      <div>
       {alerts.map((item, index) => {
-        return <AlertContainer key={index} props={item} />;
+        return <AlertContainer key={index} props={item} />
       })}
     </div>
-  );
+   }
+    
+  </>
+  
 };
 
 export default Alerts;

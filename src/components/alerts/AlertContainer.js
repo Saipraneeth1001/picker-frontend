@@ -19,8 +19,8 @@ const AlertContainer = ({props}) => {
         </Typography>
       </CardContent>
       <CardActions sx={{  }}>
-        <Button size="small"><a href={props.item.itemUrl}>Take me to the Product</a></Button>
-        <Button size="small"><a href={"/update/"+props.id}>Update</a></Button>
+        <Button size="small" variant = "contained" href={props.item.itemUrl}>Take me to the Product</Button>
+        <Button size="small" variant = "contained" href={"/update/"+props.id}>Update</Button>
       </CardActions>
     </Card> 
   );

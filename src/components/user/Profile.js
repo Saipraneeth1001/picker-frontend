@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import { Button } from '@mui/material';
 import { textAlign } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 
@@ -50,8 +51,8 @@ const Profile = () => {
       <div style={{margin: 15}}> 
         <h4>Sorry For Inconvinience</h4>
         <h4>Still Under Development</h4>
-        <button style={{backgroundColor:'blue', color:'white'}}
-        onClick = {(e) => window.location="/alerts"}>My Alerts</button>
+        <Button color='primary' variant = "contained"
+        onClick = {(e) => window.location="/alerts"}>My Alerts</Button>
       </div>
     </Box>
     

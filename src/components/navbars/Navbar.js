@@ -74,7 +74,7 @@ const Navbar = () => {
               textDecoration: 'none',
             }}
           >
-            PINCOR
+            PICKER
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

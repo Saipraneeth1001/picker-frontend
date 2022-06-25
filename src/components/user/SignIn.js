@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import Loader from "../loader/loader";
 import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 function Copyright(props) {
   return (
@@ -25,7 +26,7 @@ function Copyright(props) {
       {...props}>
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        Pincor
+        Picker
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -36,6 +37,9 @@ function Copyright(props) {
 const theme = createTheme();
 
 const SignIn = () => {
+
+  const token = localStorage.getItem("token");
+
   let navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -45,15 +49,12 @@ const SignIn = () => {
   // const [token, setToken] = React.useState("");
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const token = useSelector((state) => state.token);
 
-  const validateUserDetails = (username, password) => {
-    if (username === "" || password === "") {
-      setError(true);
-    } else {
-      setError(false);
+  useEffect(() => {
+    if (token) {
+       navigate("/alerts");
     }
-  };
+  }, []);
 
   const handleSubmit = (event) => {
     setLoading(true);
@@ -72,7 +73,7 @@ const SignIn = () => {
         },
         body: JSON.stringify(userDetails),
       };
-      fetch("http://127.0.0.1:8080/users/login", options)
+      fetch(process.env.REACT_APP_BASE_URL+"/users/login", options)
         .then((response) => {
           const temp = response.json()
         if (!response.ok) {
@@ -143,10 +144,10 @@ const SignIn = () => {
               autoComplete="current-password"
               value={password}
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
             <Button
               onClick={(e) => handleSubmit(e)}
               type="submit"

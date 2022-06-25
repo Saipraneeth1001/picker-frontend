@@ -29,7 +29,7 @@ const NewPassword = () => {
         },
         body: JSON.stringify({name, password})
       }
-      fetch("http://localhost:8080/forgotPassword/new", options)
+      fetch(process.env.REACT_APP_BASE_URL+"/forgotPassword/new", options)
       .then(response => {
          window.location = "/"
       }).catch(error => {

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Button from '@mui/material/Button';
 
 const Logout = () => {
 
@@ -6,13 +7,10 @@ const Logout = () => {
     localStorage.removeItem("token");
   }, []); 
 
-  const logout = () => {
-    window.location = "/"
-  }
   return(
     <div style={{textAlign:'center'}}>
       <h4> You have been logged out successfully</h4> 
-      <button onClick={() => logout()}>Home</button>
+      <Button href="/" variant = "contained" color = "primary">Home</Button>
 
     </div>
   );

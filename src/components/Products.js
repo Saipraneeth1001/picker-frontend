@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '@mui/material';
 
 const Products = () => {
 
@@ -7,8 +8,8 @@ const Products = () => {
     <div style={{textAlign: 'center'}}>
        <h2>Sorry For The Inconvinience</h2>
        <h3>This is currently under development</h3>
-       <button style={{backgroundColor:'blue', color:'white'}}
-       onClick={(e) => { window.location = "/" }}>Home</button>
+       <Button variant="contained" color="primary"
+       href="/">Home</Button>
     </div>
   );
 }

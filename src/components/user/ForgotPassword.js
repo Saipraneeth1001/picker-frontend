@@ -22,7 +22,7 @@ const ForgotPassword = () => {
         },
       body: JSON.stringify({username: name})
       }
-      fetch("http://localhost:8080/forgotPassword/retrieve", options)
+      fetch(process.env.REACT_APP_BASE_URL+"/forgotPassword/retrieve", options)
       .then(response => {
         setTimeout(() => {
             navigate("/otp-verification")
