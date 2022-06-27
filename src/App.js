@@ -15,7 +15,6 @@ import Logout from './components/user/Logout';
 import ForgotPassword from './components/user/ForgotPassword';
 import NewPassword from './components/user/NewPassword';
 import OtpVerification from './components/user/OtpVerification';
-import MaterialPractice from './components/MaterialPractice';
 
 function App() {
   return (
@@ -34,7 +33,6 @@ function App() {
         <Route path = "/new-password" element = {<NewPassword />} />
         <Route path = "/logout" element = {<Logout />} />
         <Route path = "/otp-verification" element = {<OtpVerification />} />
-        <Route path = "/material-practice" element = {<MaterialPractice />} />
       </Routes>
       
    
